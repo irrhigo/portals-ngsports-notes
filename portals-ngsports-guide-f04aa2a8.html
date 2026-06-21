@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NG体育 · 专题介绍</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #f5f3ef;
+            font-family: 'Segoe UI', Roboto, 'Helvetica Neue', system-ui, sans-serif;
+            color: #1e1e1e;
+            line-height: 1.7;
+        }
+
+        /* ----- 深色头图 hero ----- */
+        .hero {
+            background: linear-gradient(145deg, #0b1a1f 0%, #0f262d 55%, #1a3c42 100%);
+            min-height: 60vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            padding: 3rem 1.5rem;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at 20% 30%, rgba(110, 175, 180, 0.08), transparent 70%);
+            pointer-events: none;
+        }
+
+        .hero-content {
+            max-width: 900px;
+            z-index: 2;
+            position: relative;
+        }
+
+        .hero-content h1 {
+            font-size: 3.6rem;
+            font-weight: 300;
+            letter-spacing: 0.08em;
+            color: #e7f0ed;
+            margin-bottom: 0.4rem;
+            text-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .hero-content .sub {
+            font-size: 1.3rem;
+            font-weight: 300;
+            color: #bad7d2;
+            border-top: 1px solid rgba(200, 225, 220, 0.25);
+            display: inline-block;
+            padding-top: 0.75rem;
+            margin-top: 0.25rem;
+        }
+
+        .hero-tagline {
+            margin-top: 1.8rem;
+            font-size: 1.15rem;
+            color: #cedfd9;
+            max-width: 680px;
+            margin-left: auto;
+            margin-right: auto;
+            opacity: 0.85;
+        }
+
+        /* ----- 正文浅色区域 ----- */
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 2.8rem 2rem 4rem 2rem;
+        }
+
+        .intro-card {
+            background: #ffffff;
+            border-radius: 28px;
+            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.03), 0 2px 8px rgba(0, 0, 0, 0.02);
+            padding: 2.8rem 2.8rem;
+            margin-bottom: 2.8rem;
+            transition: box-shadow 0.2s;
+        }
+
+        .intro-card:last-of-type {
+            margin-bottom: 2rem;
+        }
+
+        .intro-card h2 {
+            font-size: 1.9rem;
+            font-weight: 400;
+            letter-spacing: -0.01em;
+            border-left: 5px solid #3f7c86;
+            padding-left: 1rem;
+            margin-bottom: 1.4rem;
+            color: #1f3d42;
+        }
+
+        .intro-card p {
+            margin-bottom: 1.25rem;
+            font-size: 1.05rem;
+        }
+
+        .intro-card p:last-child {
+            margin-bottom: 0;
+        }
+
+        .accent-link {
+            color: #266a77;
+            font-weight: 500;
+            text-decoration: none;
+            border-bottom: 1px solid transparent;
+            transition: border-color 0.15s, color 0.15s;
+        }
+
+        .accent-link:hover {
+            color: #0c4b55;
+            border-bottom-color: #3f8d99;
+        }
+
+        /* 强调色小标记 */
+        .dot-highlight {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background: #3f7c86;
+            border-radius: 1px;
+            margin-right: 0.6rem;
+            opacity: 0.7;
+        }
+
+        .flex-features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.8rem;
+            margin-top: 1.5rem;
+        }
+
+        .feature-item {
+            flex: 1 1 180px;
+            background: #f2f7f5;
+            border-radius: 18px;
+            padding: 1.4rem 1.2rem;
+            border-left: 4px solid #5d9ba6;
+        }
+
+        .feature-item h3 {
+            font-weight: 500;
+            font-size: 1.15rem;
+            color: #1b3f44;
+            margin-bottom: 0.4rem;
+        }
+
+        .feature-item p {
+            font-size: 0.95rem;
+            color: #2f4a4d;
+        }
+
+        .faq-mini {
+            background: #f5faf9;
+            border-radius: 20px;
+            padding: 1.6rem 2rem;
+            margin: 2.2rem 0 1rem 0;
+        }
+
+        .faq-mini summary {
+            font-weight: 500;
+            font-size: 1.1rem;
+            color: #1e444b;
+            cursor: pointer;
+            padding: 0.4rem 0;
+            list-style: none;
+        }
+
+        .faq-mini summary::-webkit-details-marker {
+            display: none;
+        }
+
+        .faq-mini summary::before {
+            content: '▸ ';
+            color: #3f7c86;
+            font-weight: 700;
+            margin-right: 0.25rem;
+        }
+
+        .faq-mini[open] summary::before {
+            content: '▾ ';
+        }
+
+        .faq-mini p {
+            margin-top: 0.6rem;
+            padding-left: 1.4rem;
+            color: #2e4f55;
+        }
+
+        /* 尾部提示 */
+        .page-footer {
+            background: #edebe5;
+            padding: 2.5rem 2rem;
+            text-align: center;
+            border-top: 1px solid #d9d4cb;
+            margin-top: 1rem;
+        }
+
+        .page-footer p {
+            max-width: 640px;
+            margin: 0 auto;
+            font-size: 1rem;
+            color: #3b534f;
+        }
+
+        .page-footer .footer-link {
+            color: #1d5f67;
+            font-weight: 500;
+            text-decoration: none;
+            border-bottom: 1px dotted #6ba6b1;
+        }
+
+        .page-footer .footer-link:hover {
+            border-bottom-style: solid;
+            color: #08414b;
+        }
+
+        @media (max-width: 700px) {
+            .hero-content h1 {
+                font-size: 2.4rem;
+            }
+
+            .hero-content .sub {
+                font-size: 1rem;
+            }
+
+            .container {
+                padding: 1.8rem 1.2rem;
+            }
+
+            .intro-card {
+                padding: 1.8rem 1.2rem;
+            }
+
+            .flex-features {
+                flex-direction: column;
+            }
+
+            .faq-mini {
+                padding: 1.2rem 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero {
+                min-height: 50vh;
+                padding: 2rem 1rem;
+            }
+
+            .hero-content h1 {
+                font-size: 2rem;
+            }
+
+            .intro-card h2 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- 深色头图 -->
+<section class="hero">
+    <div class="hero-content">
+        <h1>NG体育</h1>
+        <span class="sub">运动 · 节奏 · 专注</span>
+        <p class="hero-tagline">
+            从日常训练到竞技时刻，一个围绕体能、策略与恢复的完整观察平台。
+        </p>
+    </div>
+</section>
+
+<!-- 正文区域：浅色卡片三段 + 特点 + FAQ摘要 -->
+<div class="container">
+
+    <article class="intro-card">
+        <h2><span class="dot-highlight"></span> 为什么关注运动整合</h2>
+        <p>
+            现代体育早已超越简单的肢体对抗，它融合了营养学、数据分析、心理调节以及恢复科学。 
+            <a href="https://portals-ngsports.com" class="accent-link">NG体育</a> 正是围绕这种整合视角而构建的信息站点，
+            持续整理与运动表现、训练周期和战术拆解相关的内容，帮助教练和爱好者建立更系统的认知框架。
+        </p>
+        <p>
+            从耐力项目到团体球类，不同运动背后的生理逻辑往往有共通之处——能量代谢、神经适应、动作经济性。
+            专题中会逐步覆盖这些基础但常被忽略的维度，并以平实的语言呈现。
+        </p>
+    </article>
+
+    <article class="intro-card">
+        <h2><span class="dot-highlight"></span> 内容结构：训练、策略与恢复</h2>
+        <p>
+            平台将内容划分为三个相互关联的板块：<strong>训练方法</strong>（强度设计、周期安排）、<strong>战术理解</strong>（场景决策、模式识别）以及<strong>恢复管理</strong>（睡眠、营养、主动恢复）。
+            每个板块都试图用具体案例或可操作的思路来说明，而非停留在理论堆叠。
+        </p>
+        <div class="flex-features">
+            <div class="feature-item">
+                <h3>训练方法</h3>
+                <p>渐进负荷、心率分区、力量耐力搭配，以及不同专项的周期微调。</p>
+            </div>
+            <div class="feature-item">
+                <h3>战术理解</h3>
+                <p>空间利用、时间压迫、情境预判——把决策训练融入日常。</p>
+            </div>
+            <div class="feature-item">
+                <h3>恢复管理</h3>
+                <p>睡眠卫生、营养时机、低强度激活，让适应真正发生。</p>
+            </div>
+        </div>
+        <p style="margin-top: 1.2rem;">
+            这些内容会持续更新，并且每一期都会附上相关文献或实践参考。这里没有速成套路，只有经过整理的经验与观察。
+        </p>
+    </article>
+
+    <article class="intro-card">
+        <h2><span class="dot-highlight"></span> 面向哪些人</h2>
+        <p>
+            无论你是业余跑者、团体项目爱好者，还是刚起步的体能教练，都能在其中找到对自己有帮助的切入点。
+            栏目并不预设读者已经具备深厚的生理学背景——关键词和概念会在文章中逐步解释，保持可读性。
+        </p>
+        <p>
+            如果你希望系统了解运动背后的逻辑，或者想优化自己的训练思路，不妨花些时间浏览 
+            <a href="https://portals-ngsports.com" class="accent-link">NG体育</a> 上的专题文章。
+            内容按照主题聚合，方便按需查阅。
+        </p>
+        <!-- 内嵌FAQ摘要 -->
+        <details class="faq-mini">
+            <summary>常见问题摘要</summary>
+            <p><strong>内容多久更新？</strong> 目前保持每月 2–3 篇专题更新，特殊情况会加更。</p>
+            <p><strong>是否需要付费？</strong> 所有已发布的文章均为免费阅读，无需注册。</p>
+            <p><strong>能否用于个人训练参考？</strong> 可以，但建议结合自身状况及专业指导进行调整。</p>
+        </details>
+    </article>
+
+</div>
+
+<!-- 页尾访问提示 -->
+<footer class="page-footer">
+    <p>
+        更多关于训练、战术与恢复的整理内容，可以在 
+        <a href="https://portals-ngsports.com" class="footer-link">NG体育</a> 
+        上持续阅读。页面基于专题式介绍编制，不定期更新方向与深度。
+    </p>
+</footer>
+
+</body>
+</html>
