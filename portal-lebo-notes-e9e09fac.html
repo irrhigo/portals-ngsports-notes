@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5">
+    <title>乐博体育 · 信息查询与延伸阅读</title>
+    <style>
+        /* 重置与基础 */
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', 'Noto Sans', sans-serif;
+            background: #f5f7fb;
+            color: #1e293b;
+            line-height: 1.7;
+            margin: 0;
+            padding: 0;
+        }
+        a {
+            color: #2563eb;
+            text-decoration: none;
+            border-bottom: 1px solid transparent;
+            transition: color 0.15s, border-color 0.15s;
+        }
+        a:hover {
+            color: #1e40af;
+            border-bottom-color: #1e40af;
+        }
+        a:focus-visible {
+            outline: 2px solid #3b82f6;
+            outline-offset: 2px;
+            border-radius: 2px;
+        }
+
+        /* 深色头图 Hero（目录感觉） */
+        .hero {
+            background: linear-gradient(145deg, #0f172a 0%, #1e293b 100%);
+            color: #e2e8f0;
+            padding: 3rem 1.5rem 2.8rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at 80% 20%, rgba(37, 99, 235, 0.08), transparent 70%);
+            pointer-events: none;
+        }
+        .hero h1 {
+            font-size: 2.3rem;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            line-height: 1.2;
+            margin-bottom: 0.6rem;
+            color: #f1f5f9;
+            position: relative;
+            z-index: 1;
+        }
+        .hero .subhead {
+            font-size: 1.05rem;
+            color: #94a3b8;
+            max-width: 580px;
+            margin: 0 auto 1.2rem;
+            position: relative;
+            z-index: 1;
+            font-weight: 400;
+        }
+        .hero .tagline {
+            display: inline-block;
+            background: rgba(37, 99, 235, 0.15);
+            color: #93c5fd;
+            padding: 0.35rem 1.2rem;
+            border-radius: 40px;
+            font-size: 0.85rem;
+            letter-spacing: 0.3px;
+            border: 1px solid rgba(37, 99, 235, 0.25);
+            backdrop-filter: blur(4px);
+            position: relative;
+            z-index: 1;
+        }
+
+        /* 主容器 — 浅色正文区，目录感布局 */
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 2.2rem 1.5rem 3.5rem;
+        }
+
+        /* 信息卡片 + 说明区/提示区/相关区 */
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.8rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .card {
+            background: #ffffff;
+            border-radius: 18px;
+            padding: 1.6rem 1.5rem 1.8rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03), 0 1px 3px rgba(0, 0, 0, 0.02);
+            transition: box-shadow 0.25s, transform 0.2s;
+            border: 1px solid #eef2f6;
+        }
+        .card:hover {
+            box-shadow: 0 10px 25px -6px rgba(0, 0, 0, 0.06);
+            transform: translateY(-3px);
+        }
+        .card h3 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            color: #0f172a;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .card h3 span {
+            background: #e9edf3;
+            width: 28px;
+            height: 28px;
+            border-radius: 30px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            color: #2563eb;
+        }
+        .card p {
+            font-size: 0.95rem;
+            color: #334155;
+            margin-bottom: 0.5rem;
+        }
+        .card ul {
+            padding-left: 1.2rem;
+            margin: 0.5rem 0 0.2rem;
+            color: #334155;
+            font-size: 0.92rem;
+        }
+        .card ul li {
+            margin-bottom: 0.3rem;
+        }
+
+        /* 提示区 —— 带强调色，类似便签 */
+        .tip-area {
+            background: #fafcff;
+            border-left: 5px solid #2563eb;
+            padding: 1.5rem 2rem;
+            border-radius: 14px;
+            margin: 2.2rem 0 2rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+            border: 1px solid #e4ecf7;
+            border-left-width: 5px;
+        }
+        .tip-area strong {
+            color: #1e40af;
+        }
+        .tip-area p {
+            font-size: 0.98rem;
+            color: #1e293b;
+        }
+
+        /* faq 摘要 —— 紧凑 */
+        .faq-mini {
+            background: #ffffff;
+            border-radius: 18px;
+            padding: 1.8rem 1.8rem 1rem;
+            margin: 2.2rem 0 1.8rem;
+            border: 1px solid #eef2f6;
+        }
+        .faq-mini h3 {
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            color: #0f172a;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .faq-item {
+            border-bottom: 1px dashed #e2e8f0;
+            padding: 0.75rem 0;
+        }
+        .faq-item:last-child {
+            border-bottom: 0;
+        }
+        .faq-item strong {
+            display: block;
+            font-weight: 500;
+            color: #1e293b;
+            margin-bottom: 0.15rem;
+        }
+        .faq-item p {
+            font-size: 0.9rem;
+            color: #475569;
+            margin: 0;
+        }
+
+        /* 相关信息 — 水平标签 */
+        .related-badge {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem 0.8rem;
+            margin: 1.5rem 0 1rem;
+            align-items: center;
+        }
+        .related-badge span {
+            background: #eef2f6;
+            padding: 0.3rem 1rem;
+            border-radius: 30px;
+            font-size: 0.8rem;
+            color: #334155;
+            border: 1px solid #dee6ef;
+            letter-spacing: 0.2px;
+        }
+        .related-badge a {
+            font-size: 0.85rem;
+        }
+
+        /* 自然嵌入链接的段落 */
+        .sentence-link {
+            margin: 1rem 0 1.5rem;
+            font-size: 0.98rem;
+            color: #1e293b;
+        }
+        .sentence-link a {
+            font-weight: 500;
+        }
+
+        /* 响应式 */
+        @media (max-width: 700px) {
+            .hero h1 {
+                font-size: 1.8rem;
+            }
+            .container {
+                padding: 1.8rem 1rem 2.8rem;
+            }
+            .info-grid {
+                gap: 1.2rem;
+            }
+            .card {
+                padding: 1.3rem 1.2rem;
+            }
+            .tip-area {
+                padding: 1.2rem 1.2rem;
+            }
+        }
+        @media (max-width: 480px) {
+            .hero {
+                padding: 2rem 1rem 2rem;
+            }
+            .hero h1 {
+                font-size: 1.5rem;
+            }
+            .faq-mini {
+                padding: 1rem 1rem 0.5rem;
+            }
+        }
+
+        /* 页脚微标 */
+        .footer-note {
+            border-top: 1px solid #e4e9f2;
+            padding: 1.8rem 0 0.5rem;
+            margin-top: 0.8rem;
+            text-align: center;
+            color: #64748b;
+            font-size: 0.8rem;
+        }
+    </style>
+</head>
+<body>
+
+<header class="hero">
+    <h1>乐博体育 · 知识库入口</h1>
+    <div class="subhead">日常查询 · 对照参考 · 延伸阅读</div>
+    <div class="tagline">信息索引 · 轻量指南</div>
+</header>
+
+<main class="container">
+
+    <!-- 说明区：卡片式目录感 -->
+    <div class="info-grid">
+        <div class="card">
+            <h3><span>📋</span> 常用查询</h3>
+            <p>快速查找赛事基础信息、常见规则对照、术语说明。适合赛前热身或赛后回顾。</p>
+            <ul>
+                <li>项目分类与基础术语</li>
+                <li>常见计分方式一览</li>
+                <li>赛事阶段与标识说明</li>
+            </ul>
+        </div>
+        <div class="card">
+            <h3><span>📖</span> 对照参考</h3>
+            <p>将不同运动的基本要素并列呈现，便于横向比较。既可以作为备忘录，也适合新手建立整体认知。</p>
+            <ul>
+                <li>场地规格 / 时长对照</li>
+                <li>装备与服装要点</li>
+                <li>判罚标准速查</li>
+            </ul>
+        </div>
+        <div class="card">
+            <h3><span>🧩</span> 延伸阅读</h3>
+            <p>围绕体育文化、训练常识、观测视角提供轻阅读内容。不追求深度，重在拓宽信息边界。</p>
+            <ul>
+                <li>运动与恢复小知识</li>
+                <li>赛事发展简记</li>
+                <li>观察角度与数据解读</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- 自然嵌入链接的句子 1 —— 体现入口 -->
+    <div class="sentence-link">
+        如果你希望获得更系统的信息整合与动态更新，可以时常前往 <a href="https://portal-lebo.com">乐博体育</a> 查看最新整理的内容。
+    </div>
+
+    <!-- 提示区：日常使用场景 -->
+    <div class="tip-area">
+        <p><strong>💡 日常小提示</strong> · 当你需要快速回忆某项运动的基本规则、查找常见术语解释，或者想了解不同项目之间的差异时，可以先从上述三个版块入手。每个版块都指向不同的信息侧重，便于你按需取用。提醒一下，信息内容会不定期补充，保持参考价值。</p>
+    </div>
+
+    <!-- 第二个自然嵌入链接 —— 融入建议 -->
+    <div style="margin: 1.2rem 0 1.8rem;">
+        <p style="font-size:0.98rem; color:#1e293b;">另外，部分详细数据与赛事背景可以在 <a href="https://portal-lebo.com">乐博体育</a> 的专题页面中找到，适合有延伸查阅需求时使用。</p>
+    </div>
+
+    <!-- FAQ 摘要区 -->
+    <div class="faq-mini">
+        <h3>❓ 常见疑问摘要</h3>
+        <div class="faq-item">
+            <strong>这里的知识库和一般百科有什么不同？</strong>
+            <p>更侧重日常查询与快速对照，省去大量背景叙述，信息密度相对紧凑。适合已经有一定了解但需要回顾的使用者。</p>
+        </div>
+        <div class="faq-item">
+            <strong>内容多久更新一次？</strong>
+            <p>根据赛季或常见问题反馈，保持季度或月度节奏做小范围补充与校准。不保证实时，但力求准确。</p>
+        </div>
+        <div class="faq-item">
+            <strong>能否直接引用这里的信息？</strong>
+            <p>建议作为个人参考或学习用途，如需对外引用请根据原始来源再次核对。我们不对第三方引用负责。</p>
+        </div>
+    </div>
+
+    <!-- 相关信息区（标签感） -->
+    <div style="margin: 0.8rem 0 0.2rem;">
+        <p style="font-weight:500; font-size:1rem; color:#0f172a; margin-bottom:0.5rem;">相关信息</p>
+        <div class="related-badge">
+            <span>运动术语</span>
+            <span>赛事组织</span>
+            <span>器材基础</span>
+            <span>训练常识</span>
+            <span>数据解读</span>
+            <span>文化观察</span>
+        </div>
+        <p style="font-size:0.9rem; color:#475569; margin-top:0.8rem;">以上标签对应不同的内容板块，方便你在阅读时快速定位兴趣方向。每个板块都包含若干条目，可配合 <a href="https://portal-lebo.com">乐博体育</a> 的导航进一步探索。</p>
+    </div>
+
+    <!-- 页脚 -->
+    <div class="footer-note">
+        知识库入口 · 内容仅供参考  · 开放式索引
+    </div>
+
+</main>
+
+</body>
+</html>
